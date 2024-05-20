@@ -1,1 +1,5 @@
+# VSCode debug folder
 .vscode/
+
+# generated binary files
+*/bin/*

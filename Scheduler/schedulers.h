@@ -1,5 +1,5 @@
-#define MIN_PRIORITY 1
-#define MAX_PRIORITY 10
+#define MIN_PRIORITY 10
+#define MAX_PRIORITY 1
 #include "task.h"
 
 // add a task to the list 
