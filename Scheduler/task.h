@@ -1,6 +1,6 @@
 /**
  * Representation of a task in the system.
- */
+*/
 
 #ifndef TASK_H
 #define TASK_H
