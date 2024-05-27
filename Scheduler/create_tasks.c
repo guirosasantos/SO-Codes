@@ -43,11 +43,11 @@ int main()
     {
         Task task = CreateTask();
         printf("\n Sending task %s with priority %d to the scheduler\n", task.name, task.priority);
-        write(file, task.name, strlen(task.name) + 1); // send the name
-        write(file, &task.tid, sizeof(task.tid)); // send the tid
-        write(file, &task.priority, sizeof(task.priority)); // send the priority
-        write(file, &task.burst, sizeof(task.burst)); // send the burst
-        write(file, &task.deadline, sizeof(task.deadline)); // send the deadline
+        write(file, task.name, strlen(task.name) + 1);
+        write(file, &task.tid, sizeof(task.tid));
+        write(file, &task.priority, sizeof(task.priority));
+        write(file, &task.burst, sizeof(task.burst));
+        write(file, &task.deadline, sizeof(task.deadline));
     }
     sleep(1);
 

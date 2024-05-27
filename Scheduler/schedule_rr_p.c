@@ -9,7 +9,6 @@
 struct node *priority_lists[9];
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-// add a task to the list
 void add(Task *task)
 {
    pthread_mutex_lock(&lock);
@@ -21,11 +20,10 @@ void add(Task *task)
 void remove_task(Task *task)
 {
    delete (&priority_lists[task->priority - 1], task);
-   free(task->name); // Free the memory allocated for the name
-   free(task);       // Free the memory allocated for the task
+   free(task->name);
+   free(task);
 }
 
-// invoke the scheduler
 void schedule()
 {
    while (1)
@@ -110,12 +108,12 @@ void *read_tasks(void *arg)
    while (1)
    {
       Task *task = (Task *)malloc(sizeof(Task));
-      task->name = (char *)malloc(100);                    // allocate memory for the name
-      read(file, task->name, 100);                         // read the name
-      read(file, &task->tid, sizeof(task->tid));           // read the tid
-      read(file, &task->priority, sizeof(task->priority)); // read the priority
-      read(file, &task->burst, sizeof(task->burst));       // read the burst
-      read(file, &task->deadline, sizeof(task->deadline)); // read the deadline
+      task->name = (char *)malloc(100);
+      read(file, task->name, 100);
+      read(file, &task->tid, sizeof(task->tid));
+      read(file, &task->priority, sizeof(task->priority));
+      read(file, &task->burst, sizeof(task->burst));
+      read(file, &task->deadline, sizeof(task->deadline));
 
       add(task);
    }

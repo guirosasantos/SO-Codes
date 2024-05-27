@@ -17,7 +17,6 @@ int main()
    initialize_priority_lists();
 
    printf("Adding tasks to first list\n");
-   // create_tasks();
    create_tasks_from_file("rr-schedule_pri.txt");
 
    pthread_create(&read_tasks_thread, NULL, read_tasks, NULL);
