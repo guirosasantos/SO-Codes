@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <fcntl.h>
+#include <string.h>
 
 struct node *priority_lists[9];
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
@@ -20,6 +21,8 @@ void add(Task *task)
 void remove_task(Task *task)
 {
    delete (&priority_lists[task->priority - 1], task);
+   free(task->name); // Free the memory allocated for the name
+   free(task); // Free the memory allocated for the task
 }
 
 // invoke the scheduler
@@ -80,7 +83,10 @@ void initialize_priority_lists()
 Task *create_task(char *name, int tid, int priority, int burst, int deadline)
 {
    Task *newTask = (Task *)malloc(sizeof(Task));
-   newTask->name = name;
+   
+   newTask->name = (char *)malloc(strlen(name) + 1);
+   strcpy(newTask->name, name);
+
    newTask->tid = tid;
    newTask->priority = priority;
    newTask->burst = burst;
@@ -155,6 +161,30 @@ void create_tasks()
    create_task("Task46", 46, 5, 32, 32);
 }
 
+void create_tasks_from_file(char *filename)
+{
+   FILE *file = fopen(filename, "r");
+   if (file == NULL)
+   {
+      printf("Could not open file %s\n", filename);
+      return;
+   }
+
+   char line[256];
+   while (fgets(line, sizeof(line), file))
+   {
+      char *name = strtok(line, ", ");
+      int tid = atoi(strtok(NULL, ", "));
+      int priority = atoi(strtok(NULL, ", "));
+      int burst = atoi(strtok(NULL, ", "));
+      int deadline = atoi(strtok(NULL, ", "));
+
+      create_task(name, tid, priority, burst, deadline);
+   }
+
+   fclose(file);
+}
+
 int main()
 {
    pthread_t read_tasks_thread;
@@ -166,7 +196,8 @@ int main()
    initialize_priority_lists();
 
    printf("Adding tasks to first list\n");
-   create_tasks();
+   //create_tasks();
+   create_tasks_from_file("rr-schedule_pri.txt");
 
    pthread_create(&read_tasks_thread, NULL, read_tasks, NULL);
 
