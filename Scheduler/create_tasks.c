@@ -16,7 +16,7 @@ Task CreateTask()
     int tid, priority, burst, deadline;
 
     printf("Enter task name: ");
-    scanf("%s", name);
+    scanf("%99s", name);
     task->name = name;
     printf("Enter task tid: ");
     scanf("%d", &task->tid);
@@ -43,7 +43,10 @@ int main()
     {
         Task task = CreateTask();
         printf("\n Sending task %s with priority %d to the scheduler\n", task.name, task.priority);
-        write(file, task.name, strlen(task.name) + 1);
+        task.name[99] = '\0'; 
+        int name_length = strlen(task.name) + 1;
+        write(file, &name_length, sizeof(name_length));
+        write(file, task.name, name_length);
         write(file, &task.tid, sizeof(task.tid));
         write(file, &task.priority, sizeof(task.priority));
         write(file, &task.burst, sizeof(task.burst));

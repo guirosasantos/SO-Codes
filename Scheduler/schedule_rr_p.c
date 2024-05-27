@@ -107,9 +107,11 @@ void *read_tasks(void *arg)
 
    while (1)
    {
+      int name_length;
       Task *task = (Task *)malloc(sizeof(Task));
-      task->name = (char *)malloc(100);
-      read(file, task->name, 100);
+      read(file, &name_length, sizeof(name_length));
+      task->name = (char *)malloc(name_length);
+      read(file, task->name, name_length);
       read(file, &task->tid, sizeof(task->tid));
       read(file, &task->priority, sizeof(task->priority));
       read(file, &task->burst, sizeof(task->burst));
