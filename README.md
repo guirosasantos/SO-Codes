@@ -10,4 +10,4 @@ Este código tem como objetivo simular as implementações dos escalonadores com
 
 ## Relatório
 
-O relatório detalhando o projeto encontra-se na raiz do repositório, no arquivo `relatório.pdf`.
+O relatório detalhando o projeto encontra-se na raiz do repositório, no arquivo [relatório.pdf](relatório.pdf).
