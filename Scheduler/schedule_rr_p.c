@@ -6,11 +6,14 @@
 #include <fcntl.h>
 
 struct node *priority_lists[9];
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 // add a task to the list
 void add(Task *task)
 {
+   pthread_mutex_lock(&lock);
    insert(&priority_lists[task->priority - 1], task);
+   pthread_mutex_unlock(&lock);
    printf("inserted task %s on list %d\n", task->name, task->priority);
 }
 
@@ -35,7 +38,7 @@ void schedule()
                printf("Running task %s with priority %d with remaining burst %d\n", current->task->name, current->task->priority, current->task->burst);
                current->task->burst--;
                quantum++;
-               sleep(1);
+               usleep(500000);
             }
             if (current->task->burst == 0)
             {
@@ -56,6 +59,7 @@ void schedule()
                if (priority_lists[j] != NULL)
                {
                   i = j; // start from the higher priority list
+                  current = priority_lists[j];
                }
             }
 
